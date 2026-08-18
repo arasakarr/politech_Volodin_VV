@@ -1,0 +1,102 @@
+"""
+Задача 17.7. Упорядочить линейный список.
+Программа сортирует список целых чисел по возрастанию.
+"""
+
+def bubble_sort(arr):
+    """
+    Сортировка пузырьком (для наглядности).
+    Проходим по списку и меняем соседние элементы, если они не в порядке.
+    """
+    n = len(arr)
+    # Копируем список, чтобы не изменять оригинал
+    sorted_arr = arr.copy()
+    
+    for i in range(n):
+        # Флаг для оптимизации: если за проход не было обменов - список отсортирован
+        swapped = False
+        for j in range(0, n - i - 1):
+            if sorted_arr[j] > sorted_arr[j + 1]:
+                sorted_arr[j], sorted_arr[j + 1] = sorted_arr[j + 1], sorted_arr[j]
+                swapped = True
+        if not swapped:
+            break
+    return sorted_arr
+
+
+def get_numbers_from_user():
+    """
+    Запрашивает у пользователя числа и возвращает список целых чисел.
+    Обрабатывает ошибки ввода.
+    """
+    while True:
+        try:
+            user_input = input("Введите целые числа через пробел: ")
+            # Разбиваем строку на части и преобразуем в int
+            numbers = list(map(int, user_input.split()))
+            
+            if not numbers:
+                print("Ошибка: список не может быть пустым. Попробуйте снова.")
+                continue
+                
+            return numbers
+        except ValueError:
+            print("Ошибка: введите только целые числа, разделённые пробелами. Попробуйте снова.")
+
+
+def main():
+    """Главная функция программы."""
+    print("=" * 60)
+    print("ПРОГРАММА УПОРЯДОЧЕНИЯ ЛИНЕЙНОГО СПИСКА")
+    print("Задача 17.7: сортировка по возрастанию")
+    print("=" * 60)
+    
+    # 1. Ввод данных
+    original_list = get_numbers_from_user()
+    
+    # 2. Вывод исходного списка
+    print("\nИсходный список:")
+    print(f"  {original_list}")
+    print(f"  Длина списка: {len(original_list)}")
+    
+    # 3. Сортировка встроенным методом (быстро и просто)
+    sorted_builtin = sorted(original_list)
+    print("\nСортировка встроенным методом sorted():")
+    print(f"  {sorted_builtin}")
+    
+    # 4. Сортировка пузырьком (для демонстрации алгоритма)
+    sorted_bubble = bubble_sort(original_list)
+    print("\nСортировка пузырьком (алгоритм):")
+    print(f"  {sorted_bubble}")
+    
+    # 5. Проверка, что оба метода дали одинаковый результат
+    if sorted_builtin == sorted_bubble:
+        print("\n✅ Результаты сортировки совпадают!")
+    else:
+        print("\n⚠️ Внимание: результаты сортировки различаются!")
+    
+    # 6. Дополнительная информация
+    print("\n" + "=" * 60)
+    print("Статистика:")
+    print(f"  Минимальный элемент: {sorted_builtin[0]}")
+    print(f"  Максимальный элемент: {sorted_builtin[-1]}")
+    print(f"  Сумма элементов: {sum(sorted_builtin)}")
+    print("=" * 60)
+    
+    # 7. Сохранение результата в файл (опционально)
+    save = input("\nСохранить результат в файл? (да/нет): ").lower()
+    if save in ['да', 'yes', 'y', 'д']:
+        with open("sorted_list.txt", "w", encoding="utf-8") as file:
+            file.write("Исходный список:\n")
+            file.write(str(original_list) + "\n\n")
+            file.write("Отсортированный список (по возрастанию):\n")
+            file.write(str(sorted_builtin) + "\n")
+            file.write(f"Длина: {len(sorted_builtin)}\n")
+            file.write(f"Сумма: {sum(sorted_builtin)}\n")
+            file.write(f"Мин: {sorted_builtin[0]}, Макс: {sorted_builtin[-1]}\n")
+        print("✅ Результат сохранён в файл 'sorted_list.txt'")
+
+
+# Точка входа в программу
+if __name__ == "__main__":
+    main()
